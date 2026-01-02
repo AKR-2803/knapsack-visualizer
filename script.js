@@ -105,9 +105,14 @@ function renderTable() {
 
 renderTable();
 
-// fill current cell
-document.getElementById("fillCurrent").addEventListener("click", () => {
-    // map visual coordinates to dp indices
+let stepDelay = 200;
+let isClear = true;
+let isRunning = false;
+
+async function runOneStep(){
+    if(isClear) isClear = false;
+
+    // visual coordinates
     const vi = curRow;
     const vj = curCol;
 
@@ -116,11 +121,6 @@ document.getElementById("fillCurrent").addEventListener("click", () => {
 
     // if dpI is out of range,stop
     if (dpI > N) {
-        return;
-    }
-
-    // Also ensure dpJ within 0..W
-    if (dpJ > W) {
         return;
     }
 
@@ -139,7 +139,9 @@ document.getElementById("fillCurrent").addEventListener("click", () => {
         // visual col = (dpJ - wt[dpI-1]) + 1 = vj - wt[dpI-1]
         depsVisual.push({ r: vi - 1, c: vj - wt[dpI - 1] });
     }
-    depsVisual.forEach(d => markDependencyCell(d.r, d.c));
+    
+    let exIdx = -1;
+    let canTake = false;
 
     // compute best using `dp` indices
     let best = dp[dpI][dpJ];
@@ -148,13 +150,42 @@ document.getElementById("fillCurrent").addEventListener("click", () => {
     } else {
         // dont take item -> dp[dpI-1][dpJ]
         best = dp[dpI - 1][dpJ];
-
-        // take item if capacity allows
+        
+        // take item if you have capacity left
         if (dpJ >= wt[dpI - 1]) {
-            const candidate = dp[dpI - 1][dpJ - wt[dpI - 1]] + val[dpI - 1];
-            best = Math.max(best, candidate);
+            canTake = true;
+            const take = dp[dpI - 1][dpJ - wt[dpI - 1]] + val[dpI - 1];
+            if(best < take){
+                exIdx = 0;
+                best = take;
+            }
         }
     }
+    
+    // include: green | exclude: red
+    // if "take" is the best option
+    // depsVis[0] = donttake, depsVis[1]: take 
+    if(exIdx === 0){
+        markIncludeCell(depsVisual[1].r, depsVisual[1].c);  // take include
+        markExcludeCell(depsVisual[0].r, depsVisual[0].c);  // donttake exclude
+    } 
+    
+    // if "take" exists, but donttake is best option
+    // take: red, donttake: green
+    else if(canTake){
+        markIncludeCell(depsVisual[0].r, depsVisual[0].c);  // donttake include
+        markExcludeCell(depsVisual[1].r, depsVisual[1].c);  // take exclude
+    }
+
+    // if no option to "take", only "donttake"
+    else{
+        markIncludeCell(depsVisual[0].r, depsVisual[0].c);  // donttake include
+    }
+    
+    await sleep(stepDelay);
+
+    // stop running if stopping is triggered
+    if(!isRunning) return;
 
     // update `dp` array
     dp[dpI][dpJ] = best;
@@ -178,21 +209,92 @@ document.getElementById("fillCurrent").addEventListener("click", () => {
     // update status
     document.getElementById("status").textContent =
         (curRow - 1) <= N ?
-            `Next Cell: (${curRow}, ${curCol})`
+            `Next Cell: (${curRow - 1}, ${curCol - 1})`
             : `All cells filled`;
+}
+
+// fill current cell
+document.getElementById("fillCurrent").addEventListener("click", async () => {
+    if(isRunning) return;
+
+    // start
+    isRunning = true;
+    
+    // fill current cell
+    await runOneStep();
+
+    // stop
+    isRunning = false;
+});
+
+// fill current cell
+document.getElementById("fillAll").addEventListener("click", async () => {
+    if(isRunning) return;
+
+    // start
+    isRunning = true;
+    
+    // fill current cell
+    while(curRow - 1 <= N && isRunning){
+        await runOneStep();
+    }
+
+    // stop
+    isRunning = false;
+});
+
+document.getElementById("clearTable").addEventListener('click', () => {
+    if(isClear) return;
+    
+    isRunning = false;
+
+    clearHighlights();
+
+    let table = document.querySelector("#tableHolder table");
+
+    // clear the table
+    for(let r = 2; r < N + 2; r++){
+        for(let c = 2; c < W + 2; c++){
+            table.rows[r].cells[c].textContent = "";
+        }
+    }
+
+    curRow = 2;
+    curCol = 2;
+
+    isClear = true;
 });
 
 
+
 function clearHighlights() {
-    document.querySelectorAll("td.current, td.dependency")
-        .forEach(td => td.classList.remove("current", "dependency"));
+    document.querySelectorAll("td.current, td.dependency, td.exclude, td.include")
+        .forEach(td => td.classList.remove("current", "dependency", "exclude", "include"));
 }
 
 function markCurrentCell(i, j) {
     const td = document.querySelector(`td[data-r="${i}"][data-c="${j}"]`);
     if (td) td.classList.add("current");
 }
-function markDependencyCell(i, j) {
+
+function markExcludeCell(i, j) {
     const td = document.querySelector(`td[data-r="${i}"][data-c="${j}"]`);
-    if (td) td.classList.add("dependency");
+    if (td) td.classList.add("exclude");
 }
+
+function markIncludeCell(i, j) {
+    const td = document.querySelector(`td[data-r="${i}"][data-c="${j}"]`);
+    if (td) td.classList.add("include");
+}
+
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const slider = document.getElementById("speedSlider");
+const speedValue = document.getElementById("speedValue");
+
+slider.addEventListener('input', () => {
+    stepDelay = Number(slider.value);
+    speedValue.textContent = `${stepDelay} ms`;
+});

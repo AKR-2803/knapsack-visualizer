@@ -16,8 +16,15 @@
     <div id="tableHolder"></div>
 
     <div class="controls">
-        <p id="status"></p>
         <button id="fillCurrent">Fill Current Cell</button>
+        <button id="fillAll">Fill Whole Table</button>
+        <button id="clearTable">Clear Table</button>
+        <p id="status"></p>
+        <label>
+            Speed:
+            <input type="range" id="speedSlider" min="50" max="1500">
+            <span id="speedValue">500 ms</span>
+        </label>
     </div>
 
     <script src="./script.js"></script>
