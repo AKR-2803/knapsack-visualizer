@@ -4,8 +4,52 @@
     box-sizing: border-box;
 }
 
+body{
+    font-family: "Work Sans", sans-serif;
+    min-height: 100vh;
+    /* background: linear-gradient(
+    135deg,
+    #f7f9fc 0%,
+    #eef2ff 40%,
+    #f5f3ff 70%,
+    #fafaff 100%
+  ); */
+
+background: linear-gradient(
+    135deg,
+    #f4f7ff 0%,
+    #e2eaff 25%,
+    #e3d9ff 50%,
+    #b5d5f9 75%,
+    #b7cfff 100%
+  );
+}
+
+.title{
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    
+    background: linear-gradient(
+        105deg,
+        #3b82f6,
+        #6e70f7,
+        #a855f7,
+        #ec4899,
+        #ff4855
+    );    
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+}
+
 #tableHolder table{
     border-collapse: collapse;
+}
+
+.btns{
+    font-family: "Work Sans", sans-serif;
 }
 
 #tableHolder td{
@@ -23,4 +67,8 @@
 
 .include{
     background-color: greenyellow;
+}
+
+.hidden{
+    display: none;
 }

@@ -1,32 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Karla&family=Noto+Sans:ital,wght@1,700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet"> -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Karla&family=Noto+Sans:ital,wght@1,700&family=Space+Grotesk:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Knapsack Visualizer</title>
 </head>
+
 <body>
-    <div>
-        <strong>wt: </strong><span id="wt-array"></span>
-        <strong>val: </strong><span id="val-array"></span>
-        <strong>W: </strong><span id="capacity"></span>
+    <div class="titleHolder">
+        <h2 class="title">01 Knapsack Visualizer</h2>
     </div>
+
+    <div class="inputHolder">
+        <label>
+            wt[ ]:
+            <input id="wtInput" placeholder="e.g. 5,4,2,3">
+        </label>
+        
+        <label>
+            val[ ]:
+            <input id="valInput" placeholder="e.g. 10,40,30,50">
+        </label>
+        
+        <label>
+            W:
+            <input id="capacityInput" type="number" min="0">
+        </label>
+
+        <p id="inputError" style="color:red"></p>
+    </div>
+
+    <button id="generateTable">Generate Table</button>
 
     <div id="tableHolder"></div>
 
-    <div class="controls">
-        <button id="fillCurrent">Fill Current Cell</button>
-        <button id="fillAll">Fill Whole Table</button>
-        <button id="clearTable">Clear Table</button>
-        <p id="status"></p>
+    <div class="controls hidden" id="controlsHolder">
+        <button id="fillCurrent" class="btns">Fill Next Cell</button>
+        <button id="clearTable" class="btns">Clear Array</button>
+        <button id="pauseBtn" class="btns">Play</button>
+        <div id="description">
+            <p id="status">Next Cell: (1, 1)</p>
+            <p id="donttake">Dont take: 0</p>
+            <p id="take">Take: 0</p>
+        </div>
         <label>
             Speed:
-            <input type="range" id="speedSlider" min="50" max="1500">
+            <input type="range" id="speedSlider" min="20" max="1500">
             <span id="speedValue">500 ms</span>
         </label>
     </div>
 
     <script src="./script.js"></script>
 </body>
+
 </html>
