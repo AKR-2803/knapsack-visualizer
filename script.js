@@ -7,13 +7,13 @@
 // let curCol = 2;
 
 const state = {
-  wt: [],
-  val: [],
-  W: 0,
-  N: 0,
-  dp: [],
-  curRow: 2,
-  curCol: 2,
+    wt: [],
+    val: [],
+    W: 0,
+    N: 0,
+    dp: [],
+    curRow: 2,
+    curCol: 2,
 };
 
 function parseInputs() {
@@ -41,12 +41,12 @@ function validateInputs(wt, val, W) {
         return "Capacity W must be a non-negative integer";
     }
 
-    if(val.length > 10){
+    if (val.length > 10) {
         return "Maximum 10 elements allowed in the array"
     }
 
-    if(W > 25){
-        return "Maximum capacity(W) is 30"
+    if (W > 25) {
+        return "Maximum capacity(W) is 25"
     }
 
     for (let i = 0; i < wt.length; i++) {
@@ -94,7 +94,7 @@ function renderTable() {
         const td = document.createElement("td");
         td.dataset.r = 0;
         td.dataset.c = j;
-        if (j === 0) td.textContent = "N⬇️ W➡️";
+        if (j === 0) td.textContent = "i⬇️ j➡️";
         else td.innerHTML = `<strong>${j - 1}</strong>`;
         row0.appendChild(td);
     }
@@ -182,7 +182,7 @@ function markIncludeCell(i, j) {
 }
 
 // runtime control flags
-let stepDelay = 200;
+let stepDelay = 500;
 let isClear = true;
 
 // loop control
@@ -249,7 +249,7 @@ async function runOneStep({ animated }) {
         markIncludeCell(depsVisual[0].r, depsVisual[0].c);
     }
 
-    if(animated){
+    if (animated) {
         await sleep(stepDelay);
     }
 
@@ -293,7 +293,7 @@ async function runContinuously() {
 
     loopActive = false;
 
-    if((state.curRow - 1) > state.N || shouldPause){
+    if ((state.curRow - 1) > state.N || shouldPause) {
         generateBtn.disabled = false;
     }
 
@@ -314,7 +314,7 @@ btn.addEventListener("click", () => {
         runContinuously();
         return;
     }
-    
+
     if (loopActive && !shouldPause) {
         shouldPause = true;
         generateBtn.disabled = false;
@@ -356,7 +356,7 @@ document.getElementById("clearTable").addEventListener("click", () => {
     isClear = true;
 });
 
-function clearStatus(){
+function clearStatus() {
     document.getElementById("status").textContent = "Next Cell: (1, 1)";
     document.getElementById("donttake").textContent = "Dont take: -";
     document.getElementById("take").textContent = "Take: -";
@@ -366,7 +366,50 @@ function clearStatus(){
 // speed slider
 const slider = document.getElementById("speedSlider");
 const speedValue = document.getElementById("speedValue");
+
 slider.addEventListener("input", () => {
     stepDelay = Number(slider.value);
     speedValue.textContent = `${stepDelay} ms`;
+
+    // fill slider color dynamically
+    const min = slider.min;
+    const max = slider.max;
+
+    const fillPercent = ((stepDelay - min) / (max - min)) * 100;
+
+    slider.style.background = `
+        linear-gradient(
+        to right,
+        #6366f1 0%,
+        #6366f1 ${fillPercent}%,
+        #d1d5db ${fillPercent}%,
+        #d1d5db 100%
+    )`;
+    // console.log("fillPercent: " + fillPercent);
+});
+
+const infoBtn = document.getElementById("infoBtn");
+const infoCard = document.getElementById("infoCard");
+
+infoBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+
+    // const rect = infoCard.getBoundingClientRect();
+
+    // // infoCard.style.top = `${rect.bottom + 8}px`;
+    // // infoCard.style.left = `${rect.left + rect.width / 2}px`;
+    // // infoCard.style.top = "500px";
+    // // infoCard.style.left = "100px";
+    // // infoCard.style.transform = "translateX(-50%)";
+
+    infoCard.classList.toggle("show");
+});
+
+document.addEventListener('click', () => {
+    infoCard.classList.remove("show");
+});
+
+// prevent closing when clicking inside the info-card
+infoCard.addEventListener('click', (e) => {
+    e.stopPropagation();
 });

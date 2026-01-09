@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16-cir.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32-cir.png">
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -17,66 +19,96 @@
 </head>
 
 <body>
-    <div class="titleHolder">
-        <h2 class="title">01 Knapsack Visualizer</h2>
-    </div>
-
     <div class="main-container">
+        <div class="title-row">
+            <h2 class="title">0/1 Knapsack Visualizer</h2>
+            <img id="infoBtn" class="info-btn" src="./info-btn.png" alt="info-btn">
+        </div>
 
-
-        <div class="inputInfoContainer">
+        <div id="infoCard" class="info-card">
+            <h3>Info</h3>
+            <p>
+                0/1 Knapsack is a Dynamic Programming technique to get maximum "value" from <strong>N</strong> items in a knapsack with a limited capacity <strong>W</strong>. <a href="https://cp-algorithms.com/dynamic_programming/knapsack.html#0-1-knapsack" target="_blank">Read More</a> about 0/1 Knapsack on cp-algorithms.</p>
+            <br>
+            <p>
+                Enter the <strong>weight array</strong>, <strong>value array</strong>, and the
+                <strong>capacity</strong> of the knapsack to see how the 0/1 Knapsack DP table
+                is filled step by step.
+            </p>
+            <br>
+            <p><strong>dp[i][j]:</strong> maximum value from first <strong><em>i</em></strong> items with <strong><em>j</em></strong> capacity</p>
+            <br>
+            <p>Recurrence:</p>
+            <p>Take current item: dp[i][j-wt[i-1]] + val[i-1]</p>
+            <p>Dont take current item: dp[i-1][j]</p>
+            <p>dp[i][j] = MAX(Take, Dont take)</p>
+            <br>
+            <p>So, for each cell (i, j) we check (i-1, j-wt[i-1]) and (i, j-1), and consider the cell that gives us larger value.</p>
+            <br>
+            <p>🍎Red Cell: Indicates it was <strong>not</strong> considered</p>
+            <p>🍏Green Cell: Indicates it was considered</p>
+            <br>
+            <p>
+                This visualization shows the <em><strong>take vs dont take</strong></em>
+                decision at each cell. The same DP idea is used directly or indirectly in many
+                problems like subset sum, coin change, and other optimization-based DP problems.
+            </p>
+            
+            <br>
+            <p><a href="https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1" target="_blank">Here is the link</a> to this exact problem on GeeksForGeeks</p>
+            <br>
+            
+            <p>For queries, contact me on <a href="https://www.linkedin.com/in/aaryaveer-rajput/"
+                target="_blank">LinkedIn</a></p>
+            </div>
+            
+            
             <div class="inputHolder">
-                <label for="wtInput"> weight (wt[ ]): </label>
+            <div class="input-group">
+                <label for="wtInput"> weight (wt[]): </label>
                 <input id="wtInput" placeholder="e.g. 5,4,2,3" value="5,4,2,3">
-
-                <label for="valInput"> value (val[ ]): </label>
-                <input id="valInput" placeholder="e.g. 10,40,30,50" value="10,40,30,50">
-
-                <label for="capacityInput">capacity (W):</label>
-                <input id="capacityInput" type="number" min="0" max="30" value="5">
-                <strong id="inputError" style="color:#eb4b0c"></strong>
             </div>
 
+            <div class="input-group">
+                <label for="valInput"> value (val[]): </label>
+                <input id="valInput" placeholder="e.g. 10,40,30,50" value="10,40,30,50">
+            </div>
 
-            <!-- <div class="problemDesc">
-            <h4>Useful Information</h4>
-            <p id="problemInfo">
-                This visualizer helps you understand the 0/1 Knapsack problem using Dynamic Programming by showing how the DP table is filled step by step. In the 0/1 Knapsack problem, each item can either be taken once or not taken at all, and the goal is to maximize total value without exceeding the given capacity. The table dp[i][j] represents the maximum value achievable using the first `i` items with capacity `j`. This visualizer lets you fill the table cell by cell, observe the take vs dontTake decisions, and control the execution using play, pause, speed control, and step-by-step buttons, making the DP transition and dependencies easier to understand.
-            </p>
-        </div> -->
+            <div class="input-group">
+                <label for="capacityInput">capacity (W):</label>
+                <input id="capacityInput" type="number" min="0" max="30" value="5" placeholder="max 25">
+            </div>
+        </div>
+        <strong id="inputError" style="color:#eb4b0c"></strong>
 
-            <div class="info-card">
+        <!-- <div class="info-card">
                 <h3>Useful Information</h3>
                 <p>
                     This visualizer helps you understand the <strong>0/1 Knapsack problem</strong>
                     using <strong>Dynamic Programming</strong> by showing how the DP table is
                     filled step by step.
                 </p>
+            </div> -->
+
+        <button id="generateTable" class="btns">Generate DP Table</button>
+
+        <div id="tableHolder"></div>
+
+        <div class="controls hidden" id="controlsHolder">
+            <button id="fillCurrent" class="btns">Fill Next Cell</button>
+            <button id="clearTable" class="btns">Clear Array</button>
+            <button id="pauseBtn" class="btns">Play</button>
+            <div id="description">
+                <p id="status">Next Cell: (1, 1)</p>
+                <p id="donttake">Dont take: -</p>
+                <p id="take">Take: -</p>
+                <label>
+                    Speed:
+                    <input type="range" id="speedSlider" min="1" max="1000" value="500">
+                    <span id="speedValue">500 ms</span>
+                </label>
             </div>
-
         </div>
-
-
-    </div>
-
-    <button id="generateTable" class="btns">Generate DP Table</button>
-
-    <div id="tableHolder"></div>
-
-    <div class="controls hidden" id="controlsHolder">
-        <button id="fillCurrent" class="btns">Fill Next Cell</button>
-        <button id="clearTable" class="btns">Clear Array</button>
-        <button id="pauseBtn" class="btns">Play</button>
-        <div id="description">
-            <p id="status">Next Cell: (1, 1)</p>
-            <p id="donttake">Dont take: -</p>
-            <p id="take">Take: -</p>
-        </div>
-        <label>
-            Speed:
-            <input type="range" id="speedSlider" min="20" max="1500">
-            <span id="speedValue">500 ms</span>
-        </label>
     </div>
 
     <script src="./script.js"></script>
