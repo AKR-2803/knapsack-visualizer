@@ -4,10 +4,8 @@
     box-sizing: border-box;
 }
 
-body{
-    font-family: "Work Sans", sans-serif;
-    min-height: 100vh;
-    padding: 10px;
+html, body{
+    min-height: 100%;
     background: linear-gradient(
         135deg,
         #f4f7ff 0%,
@@ -16,6 +14,15 @@ body{
         #c6e1ff 75%,
         #c1d6ff 100%
     );
+}
+
+body{
+    font-family: "Work Sans", sans-serif;
+    min-height: 100vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
 }
 
 .title{
@@ -323,4 +330,12 @@ body{
 #speedSlider::-webkit-slider-thumb:hover{
     transform: scale(1.1);
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+#footer{
+    margin-top: auto;
+    padding: 12px 0;
+    text-align: center;
+    color: #494949d5;
+    letter-spacing: -.5px;
 }

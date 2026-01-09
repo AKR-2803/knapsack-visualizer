@@ -413,3 +413,5 @@ document.addEventListener('click', () => {
 infoCard.addEventListener('click', (e) => {
     e.stopPropagation();
 });
+
+document.getElementById("year").textContent = new Date().getFullYear();
