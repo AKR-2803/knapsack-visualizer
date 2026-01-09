@@ -7,28 +7,20 @@
 body{
     font-family: "Work Sans", sans-serif;
     min-height: 100vh;
-    /* background: linear-gradient(
-    135deg,
-    #f7f9fc 0%,
-    #eef2ff 40%,
-    #f5f3ff 70%,
-    #fafaff 100%
-  ); */
-
-background: linear-gradient(
-    135deg,
-    #f4f7ff 0%,
-    #e2eaff 25%,
-    #e3d9ff 50%,
-    #b5d5f9 75%,
-    #b7cfff 100%
-  );
+    padding: 10px;
+    background: linear-gradient(
+        135deg,
+        #f4f7ff 0%,
+        #e2eaff 25%,
+        #e3d9ff 50%,
+        #b5d5f9 75%,
+        #b7cfff 100%
+    );
 }
 
 .title{
     font-size: 2.5rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
     
     background: linear-gradient(
         105deg,
@@ -71,4 +63,149 @@ background: linear-gradient(
 
 .hidden{
     display: none;
+}
+
+.inputHolder{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 40%;
+    gap: 10px;
+    /* background-color: purple; */
+}
+
+.inputHolder input{
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 1px 2px 0 1px rgba(0,0,0, 0.2);
+}
+
+#capacityInput{
+    width: 15%;
+}
+
+.inputInfoContainer{
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+
+/* .problemDesc{
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.25),  inset 0 1px 0 rgba(255, 255, 255, 0.25);;
+} */
+
+
+.info-card {
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  max-width: 800px;
+}
+
+.info-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.info-card p {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #555e6c;
+}
+
+.info-card strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+
+
+.btns {
+  appearance: none;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 15px;
+
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #000;
+  cursor: pointer;  
+
+  box-shadow:
+    0 1px 1px rgba(99, 102, 241, 0.35),
+    0 2px 1px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.btns:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow:
+    0 1px 5px rgba(99, 102, 241, 0.45),
+    0 2px 5px rgba(0, 0, 0, 0.18);
+}
+
+.btns:active {
+  transform: translateY(0);
+  filter: brightness(0.85);
+
+  box-shadow:
+    0 2px 5px rgba(99, 102, 241, 0.35),
+    0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+#generateTable{
+    background: radial-gradient(circle at top left, #2418ff59, transparent 90%);
+}
+
+#generateTable:disabled{
+    background: radial-gradient(circle at top left, #2418ff59, transparent 90%);
+    color: rgba(42, 42, 42, 0.141);
+    cursor: not-allowed;
+}
+
+#fillCurrent{
+    background: linear-gradient(
+    100deg,
+    #9697e7 0%,
+    #c9b5ed 30%,
+    #dfc0fc 100%
+  );
+}
+
+#clearTable{
+    background: linear-gradient(
+    100deg,
+    #ee5e76 0%,
+    #e17878 40%,
+    #f29a9a 100%
+  );
+}
+
+#pauseBtn{
+     background: linear-gradient(
+    100deg,
+    #31dea5 0%,
+    #8be2d8 60%,
+    #b0fccc 100%
+  );
 }
