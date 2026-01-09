@@ -1,20 +1,12 @@
 ## 0/1 Knapsack Visualizer
 
-<kbd>
+An interactive visualizer to understand how 0/1 Knapsack problem in Dynamic Programming by filling the DP table cell by cell.
+
 <p align="center">
-  <img src="./assets/thumbnail.png" alt="0/1 Knapsack Visualizer Thumbnail" width="400">
-</p>
-</kbd>
-
-An interactive visualizer to understand how **0/1 Knapsack problem** in **Dynamic Programming** by filling the DP table cell by cell.
-
-### UI Preview
-
-<kbd>
-    <p align="center">
     <img src="./assets/ui-screenshot.png" alt="UI Screenshot" width="700">
-    </p>
-</kbd>
+</p>
+
+---
 
 ### What is the 0/1 Knapsack Problem?
 
@@ -26,6 +18,8 @@ The **0/1 Knapsack problem** is an optimization problem in Dynamic Programming, 
 Each item can either be **taken (1)** OR **not taken (0)**
 
 The goal is to **maximize the total value** without exceeding the capacity of the knapsack.
+
+---
 
 ### Dynamic Programming Approach
 
@@ -41,6 +35,8 @@ At each cell, we can either:
 
 This visualizer highlights these decisions interactively.
 
+---
+
 ### How to Use the Visualizer
 
 - Enter the **weight array**, **value array**, and **capacity**
@@ -52,6 +48,8 @@ This visualizer highlights these decisions interactively.
   - 🟦 Blue cell -> current cell whose value is being computed
   - 🟩 Green cell -> considered✅ (MAX of take and donttake)
   - 🟥 Red cell -> rejected❌ (not MAX of take and donttake)
+
+---
 
 ### Practice 0/1 Knapsack Problems
 
@@ -72,6 +70,8 @@ Here are a few practice problems based on 0/1 Knapsack:
 - [Sherlock and Cost (Hackerrank)](https://www.hackerrank.com/challenges/sherlock-and-cost/problem)
 
 Furthermore, you may refer [knapsack article on cp-algorithms](https://cp-algorithms.com/dynamic_programming/knapsack.html#0-1-knapsack)
+
+---
 
 ### Contact
 
