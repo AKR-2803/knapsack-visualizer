@@ -6,11 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16-cir.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32-cir.png">
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Karla&family=Noto+Sans:ital,wght@1,700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet"> -->
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Karla&family=Noto+Sans:ital,wght@1,700&family=Space+Grotesk:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
@@ -87,15 +82,6 @@
         </div>
         <strong id="inputError" style="color:#eb4b0c"></strong>
 
-        <!-- <div class="info-card">
-                <h3>Useful Information</h3>
-                <p>
-                    This visualizer helps you understand the <strong>0/1 Knapsack problem</strong>
-                    using <strong>Dynamic Programming</strong> by showing how the DP table is
-                    filled step by step.
-                </p>
-            </div> -->
-
         <button id="generateTable" class="btns">Generate DP Table</button>
 
         <div id="tableHolder"></div>
@@ -108,10 +94,11 @@
                 <p id="status">Next Cell: (1, 1)</p>
                 <p id="donttake">Dont take: -</p>
                 <p id="take">Take: -</p>
+                <p id="itemList">Knapsack Items: -</p>
                 <label>
                     Speed:
-                    <input type="range" id="speedSlider" min="1" max="1000" value="500">
-                    <span id="speedValue">500 ms</span>
+                    <input type="range" id="speedSlider" min="0" max="100" step="1" value="50">
+                    <span id="speedValue">1x</span>
                 </label>
             </div>
         </div>

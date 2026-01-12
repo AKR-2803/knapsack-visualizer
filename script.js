@@ -1,11 +1,3 @@
-// let wt = [5, 4, 2, 3];
-// let val = [10, 40, 30, 50];
-// let W = 5;
-// let N = wt.length;
-
-// let curRow = 2;
-// let curCol = 2;
-
 const state = {
     wt: [],
     val: [],
@@ -182,7 +174,8 @@ function markIncludeCell(i, j) {
 }
 
 // runtime control flags
-let stepDelay = 500;
+const BASE_DELAY = 200;
+let stepDelay = 200;
 let isClear = true;
 
 // loop control
@@ -209,44 +202,41 @@ async function runOneStep({ animated }) {
 
     const depsVisual = [];
     if (dpI - 1 >= 0) depsVisual.push({ r: vi - 1, c: vj });
-    if (dpI - 1 >= 0 && dpJ >= state.wt[dpI - 1])
-        depsVisual.push({ r: vi - 1, c: vj - state.wt[dpI - 1] });
+    if (dpI - 1 >= 0 && dpJ >= state.wt[dpI - 1]) depsVisual.push({ r: vi - 1, c: vj - state.wt[dpI - 1] });
 
     let exIdx = -1, canTake = false;
+    let take = 0;
 
     let best = state.dp[dpI][dpJ];
     if (dpI === 0) best = 0;
     else {
         best = state.dp[dpI - 1][dpJ];
-        dontTakeDesc.textContent = `Dont take: dp[${dpI - 1}][${dpJ}] = ${state.dp[dpI - 1][dpJ]}`;
 
         if (dpJ >= state.wt[dpI - 1]) {
             canTake = true;
-            const take =
-                state.dp[dpI - 1][dpJ - state.wt[dpI - 1]] +
-                state.val[dpI - 1];
+            take = state.dp[dpI - 1][dpJ - state.wt[dpI - 1]] + state.val[dpI - 1];
 
             if (best < take) {
                 exIdx = 0;
                 best = take;
             }
-
-            takeDesc.textContent =
-                `Take: dp[${dpI - 1}][${dpJ - state.wt[dpI - 1]}] + val[${dpI - 1}] = ${take}`;
-        } else {
-            takeDesc.textContent =
-                `Take: Not Possible (j:${dpJ} < wt[i-1]:${state.wt[dpI - 1]})`;
         }
     }
 
     if (exIdx === 0 && depsVisual[1]) {
         markIncludeCell(depsVisual[1].r, depsVisual[1].c);
         markExcludeCell(depsVisual[0].r, depsVisual[0].c);
+        takeDesc.textContent = `Take: dp[${dpI - 1}][${dpJ - state.wt[dpI - 1]}] + val[${dpI - 1}] = ${take}🟩`;
+        dontTakeDesc.textContent = `Dont take: dp[${dpI - 1}][${dpJ}] = ${state.dp[dpI - 1][dpJ]}🟥`;
     } else if (canTake && depsVisual[1]) {
         markIncludeCell(depsVisual[0].r, depsVisual[0].c);
         markExcludeCell(depsVisual[1].r, depsVisual[1].c);
+        takeDesc.textContent = `Take: dp[${dpI - 1}][${dpJ - state.wt[dpI - 1]}] + val[${dpI - 1}] = ${take}🟥`;
+        dontTakeDesc.textContent = `Dont take: dp[${dpI - 1}][${dpJ}] = ${state.dp[dpI - 1][dpJ]}🟩`;
     } else if (depsVisual[0]) {
         markIncludeCell(depsVisual[0].r, depsVisual[0].c);
+        takeDesc.textContent = `Take: Not Possible (j:${dpJ} < wt[i-1]:${state.wt[dpI - 1]})`;
+        dontTakeDesc.textContent = `Dont take: dp[${dpI - 1}][${dpJ}] = ${state.dp[dpI - 1][dpJ]}🟩`;
     }
 
     if (animated) {
@@ -258,11 +248,7 @@ async function runOneStep({ animated }) {
     state.dp[dpI][dpJ] = best;
 
     const td = document.querySelector(`td[data-r="${vi}"][data-c="${vj}"]`);
-    if (td)
-        td.innerHTML =
-            (dpI === state.N && dpJ === state.W)
-                ? `<strong>${best}</strong>`
-                : `${best}`;
+    if (td) td.innerHTML = (dpI === state.N && dpJ === state.W) ? `<strong>${best}</strong>` : `${best}`;
 
     state.curCol++;
     if (state.curCol > state.W + 1) {
@@ -274,6 +260,10 @@ async function runOneStep({ animated }) {
         (state.curRow - 1) <= state.N
             ? `Next Cell: (${state.curRow - 1}, ${state.curCol - 1})`
             : `All cells filled`;
+
+    if (state.curRow - 1 > state.N) {
+        renderItemList();
+    }
 }
 
 const generateBtn = document.getElementById("generateTable");
@@ -361,22 +351,30 @@ function clearStatus() {
     document.getElementById("donttake").textContent = "Dont take: -";
     document.getElementById("take").textContent = "Take: -";
     document.getElementById("pauseBtn").textContent = "Play";
+    document.getElementById("itemList").textContent = "Knapsack Items: -"
 }
 
 // speed slider
 const slider = document.getElementById("speedSlider");
 const speedValue = document.getElementById("speedValue");
 
-slider.addEventListener("input", () => {
-    stepDelay = Number(slider.value);
-    speedValue.textContent = `${stepDelay} ms`;
+const SPEEDS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 4, 8];
+const STEP = 100 / (SPEEDS.length - 1);
 
-    // fill slider color dynamically
-    const min = slider.min;
-    const max = slider.max;
+function updateFromRaw(raw, snapThumb = false){
+    const sliderIndex = Math.round(raw / STEP);
+    const speed = SPEEDS[sliderIndex];
 
-    const fillPercent = ((stepDelay - min) / (max - min)) * 100;
+    stepDelay = Math.round(BASE_DELAY / speed);
 
+    speedValue.textContent = `${speed}x`;
+
+    if(snapThumb){
+        slider.value = sliderIndex * STEP;
+    }
+
+    const fillPercent = (sliderIndex / (SPEEDS.length - 1)) * 100;
+    
     slider.style.background = `
         linear-gradient(
         to right,
@@ -385,8 +383,43 @@ slider.addEventListener("input", () => {
         #d1d5db ${fillPercent}%,
         #d1d5db 100%
     )`;
-    // console.log("fillPercent: " + fillPercent);
+}
+
+slider.addEventListener("input", () => {
+    updateFromRaw(Number(slider.value), false);
 });
+
+slider.addEventListener("change", () => {
+    updateFromRaw(Number(slider.value), true);
+});
+
+function renderItemList() {
+    const itemList = document.getElementById("itemList");
+    let items = "";
+
+    if (state.curRow - 1 <= state.N) {
+        return;
+    }
+
+    let x = state.N;
+    let y = state.W;
+
+    while (x > 0 && y > 0) {
+        if (state.dp[x - 1][y] >= state.dp[x - 1][y - state.wt[x - 1]] + state.val[x - 1]) {
+            x = x - 1;
+        }
+
+        else {
+            items += `${x - 1} `;
+            y = y - state.wt[x - 1];
+            x = x - 1;
+        }
+    }
+
+    itemList.textContent = `Knapsack Items: ${[...items].reverse().join('')}`;
+
+    // console.log("x: " + x + " | y: " + y + " | dp[N][W]: " + state.dp[x][y]);
+}
 
 const infoBtn = document.getElementById("infoBtn");
 const infoCard = document.getElementById("infoCard");
