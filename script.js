@@ -405,7 +405,10 @@ function renderItemList() {
     let y = state.W;
 
     while (x > 0 && y > 0) {
-        if (state.dp[x - 1][y] >= state.dp[x - 1][y - state.wt[x - 1]] + state.val[x - 1]) {
+        const take = y >= state.wt[x - 1] ? state.dp[x - 1][y - state.wt[x - 1]] + state.val[x - 1] : -1;
+        const donttake = state.dp[x - 1][y];
+
+        if(donttake >= take){
             x = x - 1;
         }
 
