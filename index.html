@@ -38,11 +38,11 @@
                 <strong><em>j</em></strong> capacity</p>
             <br>
             <p>Recurrence:</p>
-            <p>Take current item: dp[i][j-wt[i-1]] + val[i-1]</p>
+            <p>Take current item: dp[i-1][j-wt[i-1]] + val[i-1]</p>
             <p>Dont take current item: dp[i-1][j]</p>
             <p>dp[i][j] = MAX(Take, Dont take)</p>
             <br>
-            <p>So, for each cell (i, j) we check (i-1, j-wt[i-1]) and (i, j-1), and consider the cell that gives us
+            <p>So, for each cell (i, j) we check (i-1, j-wt[i-1]) and (i-1, j), and consider the cell that gives us
                 larger value.</p>
             <br>
             <p>🍎Red Cell: Indicates it was <strong>not</strong> considered</p>
